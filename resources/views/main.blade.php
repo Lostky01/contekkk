@@ -18,6 +18,10 @@
                     @csrf
                     <button type="submit" class="btn btn-success">Download PDF</button>
                 </form>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="btn btn-danger mx-2">Logout</button>
+                </form>
             </div>
             <table class="table" id="myTable">
                 <thead>

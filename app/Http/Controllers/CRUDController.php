@@ -8,29 +8,38 @@ use Illuminate\Http\Request;
 
 class CRUDController extends Controller
 {
-    public function index() {
-        $data = Siswa::all();
-        return view('main', compact('data'));
+    public function index()
+    {
+        /* dd(Request::all()); */
+        if (session()->has('user')) {
+            $data = Siswa::all();
+            return view('main', compact('data'));
+        } else {
+            return redirect()->route('login-menu')->with('error', 'Silahkan login terlebih dahulu');
+        }
+
     }
-    
-    public function create() {
+
+    public function create()
+    {
         return view('add-siswa');
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $request->validate([
-            'nama' =>'required',
-            'nisn' =>'required',
-            'tempat_lahir' =>'required',
-            'tanggal_lahir' =>'required',
-            'alamat' =>'required',
-            'telepon' =>'required'
+            'nama' => 'required',
+            'nisn' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
         ]);
 
         $siswa = new Siswa();
         $siswa->nama = $request->nama;
         $siswa->nisn = $request->nisn;
-        $siswa->tempat_lahir = $request->tempat_lahir;  
+        $siswa->tempat_lahir = $request->tempat_lahir;
         $siswa->tanggal_lahir = $request->tanggal_lahir;
         $siswa->alamat = $request->alamat;
         $siswa->telepon = $request->telepon;
@@ -39,19 +48,21 @@ class CRUDController extends Controller
         return redirect()->route('main');
     }
 
-    public function edit($id) {
+    public function edit($id)
+    {
         $siswa = Siswa::findOrFail($id);
         return view('edit-siswa', compact('siswa'));
     }
 
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
         $request->validate([
-            'nama' =>'required',   
-            'nisn' => 'required',         
-            'tempat_lahir' =>'required',
-            'tanggal_lahir' =>'required',
-            'alamat' =>'required',
-            'telepon' =>'required'
+            'nama' => 'required',
+            'nisn' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'alamat' => 'required',
+            'telepon' => 'required',
         ]);
 
         $siswa = Siswa::findOrFail($id);
@@ -66,7 +77,8 @@ class CRUDController extends Controller
         return redirect()->route('main');
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         $siswa = Siswa::find($id);
         $siswa->delete();
         return redirect()->route('main');
@@ -75,8 +87,8 @@ class CRUDController extends Controller
     public function viewPDF()
     {
         $data = Siswa::all();
-        $pdf = PDF::loadView('pdf', array('data' =>  $data))
-        ->setPaper('a4', 'portrait');
+        $pdf = PDF::loadView('pdf', array('data' => $data))
+            ->setPaper('a4', 'portrait');
         return $pdf->stream();
 
     }
@@ -84,14 +96,13 @@ class CRUDController extends Controller
     public function downloadPDF()
     {
         $data = Siswa::all();
-        $pdf = PDF::loadView('pdf', array('data' =>  $data))
-        ->setPaper('a4', 'portrait');
+        $pdf = PDF::loadView('pdf', array('data' => $data))
+            ->setPaper('a4', 'portrait');
         return $pdf->download('data.pdf');
 
     }
 
 }
-
 
 # how to use dompdf to export?
 # https://stackoverflow.com/questions/52872290/how-to-use-dompdf-to-export-a-view-in-laravel

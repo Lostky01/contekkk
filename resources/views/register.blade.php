@@ -26,6 +26,7 @@
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <button type="submit" class="btn btn-primary mt-3">Register</button>
+            <a href="{{ route('login-menu') }}" class="btn btn-secondary  mx-auto mt-3">Login</a>
         </form>
     </div>
 </section>

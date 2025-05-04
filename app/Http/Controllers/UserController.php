@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengguna;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
@@ -35,6 +36,12 @@ class UserController extends Controller
         return view('login');
     }
 
+    public function generateToken($length = 64)
+    {
+        return Str::random($length);
+    }
+    
+
     public function login(Request $request) {   
         $request->validate([
             'username' => 'required',
@@ -42,11 +49,16 @@ class UserController extends Controller
 
         ]);
 
+        
         $user = Pengguna::where('username', $request->username)->first();
-        if($user->password == $request->password) {
-            /* dd('the password is correct' . $user); */
-            session(['user' => $user]);
-            return redirect()->route('main')->with('success', 'Login berhasil!, selamat datang user ' . $user->nama);
+        if($user && $user->password == $request->password) {
+            /* dd($this->generateToken());  */
+            session([
+                'user' => $user,
+                'token' => $this->generateToken()
+            ]);
+            /* dd('login succesful, your token is ' . session('token')); */
+            return redirect()->route('main')->with('success', 'Login berhasil!, selamat datang ' . $user->nama);
         } else {
             return redirect()->back()->with('error', 'Username atau password salah!');
             /* dd('the password is incorrect' . $user); */
@@ -55,7 +67,9 @@ class UserController extends Controller
 
     public function logout() {
         session()->flush();
-        return redirect()->route('login');  
+        session()->forget('user');
+        session()->forget('token');
+        return redirect()->route('login-menu');  
     }
 }
 

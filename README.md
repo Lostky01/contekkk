@@ -1,8 +1,8 @@
-# UjiKom Laravel 10 Project
+# tutor pfssst
 
 ## Deskripsi
 
-gatau sih buat nyontek aja
+ril or fek
 
 ## Langkah-langkah Instalasi
 

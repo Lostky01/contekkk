@@ -1,8 +1,7 @@
-# UjiKom Laravel 10 Project
+# dwadwafaww
 
 ## Deskripsi
-
-gatau sih buat nyontek aja
+blalblaba
 
 ## Langkah-langkah Instalasi
 
